@@ -1,4 +1,4 @@
-name: Build and Deploy React App v2
+name: Build and Deploy React App
 
 on:
   push:
