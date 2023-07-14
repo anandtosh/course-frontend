@@ -5,7 +5,7 @@ export default function useWebSocketClient() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = new WebSocket('ws://localhost:8080');
+    const newSocket = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL);
     setSocket(newSocket);
 
     return () => {

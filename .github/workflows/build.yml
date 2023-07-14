@@ -24,6 +24,8 @@ jobs:
       - name: Build React app
         env:
           CI: false
+          REACT_APP_BASE_API_URL: ${{ vars.REACT_APP_BASE_API_URL }}
+          REACT_APP_WEB_SOCKET_URL:  ${{ vars.REACT_APP_WEB_SOCKET_URL }}
         run: npm run build
 
       - name: Upload build files
