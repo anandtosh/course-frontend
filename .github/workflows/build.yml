@@ -1,4 +1,4 @@
-name: Build and Deploy React App
+name: Build and Deploy React App v0.8
 
 on:
   push:
