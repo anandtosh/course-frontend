@@ -8,6 +8,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    '@headlessui/tailwindcss'
+    '@headlessui/tailwindcss',
+    require('@tailwindcss/typography')
   ],
 }

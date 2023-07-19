@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import FullScreenLoader from '../../components/helpers/FullScreenLoader';
 import api from '../../utility/apis';
 import Quiz from './partials/Quiz'
+import QuizContainer from './quiz';
 
 const Learning = () => {
   const {id} = useParams()
@@ -24,7 +25,8 @@ const Learning = () => {
 
   return (
     // <Quiz course={course}/>
-    <LearningMain course={course}/>
+    <QuizContainer course={course} />
+    // <LearningMain course={course}/>
   );
 };
 
