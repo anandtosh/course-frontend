@@ -9,10 +9,14 @@ import NotFoundComponent from '../pages/not_found';
 import CoursesView from '../pages/courses';
 import SingleCourseView from '../pages/courses/course_view';
 import FileFolderWriter from '../pages/editor/multi_model';
+import Login from '../pages/auth/login';
+import Register from '../pages/auth/register';
 
 const PublicRoutes = () => {
     return (
         <Routes>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/register' element={<Register/>}/>
             <Route path="/" element={<MainLayout />}>
                 <Route index element={<Home />} />
                 <Route path="/about" element={<About />} />

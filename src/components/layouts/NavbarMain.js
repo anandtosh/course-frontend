@@ -42,8 +42,8 @@ const Header = () => {
 
       {/* Right-side links */}
       <nav className="flex items-center space-x-4">
-        <a href="#" className="text-green-400 border border-green-300 hover:border-green-200 p-2 px-4 ml-3 rounded-[20px]">Sign Up</a>
-        <a href="#" className="text-blue-400 border border-blue-300 hover:border-blue-200 p-2 px-4 ml-3 rounded-[20px]">Sign In</a>
+        <Link to={'/register'} className="text-green-400 border border-green-300 hover:border-green-200 p-2 px-4 ml-3 rounded-[20px]">Register</Link>
+        <Link to={'/login'} className="text-blue-400 border border-blue-300 hover:border-blue-200 p-2 px-4 ml-3 rounded-[20px]">Login</Link>
       </nav>
     </header>
   );

@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useQuizStore } from '../../../stores';
 
-const Timer = ({ timestamp }) => {
+const Timer = () => {
   const [countdown, setCountdown] = useState('');
+  const [seconds,setSeconds] = useState(0)
+  const {timeRemaining,setTimeRemaining} = useQuizStore()
 
   useEffect(() => {
-      if(!timestamp){
-          timestamp = new Date().getTime() + 5000
-      }
+    setSeconds(timeRemaining)
+  },[])
+
+  let timestamp = new Date().getTime() + seconds*1000
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
       const now = new Date().getTime();
       const distance = timestamp - now;
@@ -19,7 +25,7 @@ const Timer = ({ timestamp }) => {
         // Calculate remaining time
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+        setTimeRemaining(Math.floor(distance/1000))
         setCountdown(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
       }
     }, 1000);
@@ -28,7 +34,7 @@ const Timer = ({ timestamp }) => {
       // Clean up the interval on component unmount
       clearInterval(intervalId);
     };
-  }, [timestamp]);
+  }, [seconds]);
 
   return (
     <div className="">

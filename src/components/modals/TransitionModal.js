@@ -5,18 +5,19 @@ export default function TransitionModal({
     isOpen = true,
     setIsOpen = () => { },
     title,
+    onClose = () => {setIsOpen(false)},
     ...props
 }) {
     // let [isOpen, setIsOpen] = useState(true)
 
-    function closeModal() {
-        setIsOpen(false)
-    }
+    // function closeModal() {
+    //     setIsOpen(false)
+    // }
 
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                <Dialog as="div" className="relative z-10" onClose={onClose}>
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"

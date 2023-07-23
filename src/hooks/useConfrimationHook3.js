@@ -1,24 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import ConfirmationModal from '../components/modals/ConfirmationModal';
 
 const useConfirm = () => {
-  const confirmStateRef = useRef({
+  const [confirmState, setConfirmState] = useState({
     resolve: () => { },
     reject: () => { },
   });
 
-  // Create a portal to render the modal outside the main component tree
   const modalRoot = document.getElementsByTagName('body')[0];
   const modalContainer = document.createElement('div');
 
-  const confirm = async (title, content) => {
-    // Correct way to use ReactDOM.createPortal to render the ConfirmDialog
+  const confirm = async () => {
     modalRoot.appendChild(modalContainer);
-    (createRoot(modalContainer)).render(<ConfirmDialog title={title} content={content} />)
 
     return new Promise((resolve, reject) => {
-      confirmStateRef.current = {
+      setConfirmState({
         resolve: () => {
           resolve(true); // Resolving the promise with 'true' when user confirms
           cleanup();
@@ -27,38 +24,34 @@ const useConfirm = () => {
           reject(new Error('User rejected')); // Rejecting the promise with an error when user rejects
           cleanup();
         },
-      };
+      });
     });
   };
 
   const cleanup = () => {
-    confirmStateRef.current = {
+    setConfirmState({
       resolve: () => { },
       reject: () => { },
-    };
+    });
     modalRoot.removeChild(modalContainer);
+  };
+
+  const ConfirmDialog = () => {
+    return ReactDOM.createPortal(
+      <ConfirmationModal
+        onConfirm={() => handleConfirm(true)}
+        onReject={() => handleConfirm(false)}
+      />,
+      modalContainer
+    );
   };
 
   const handleConfirm = (confirmed) => {
     if (confirmed) {
-      confirmStateRef.current.resolve();
+      confirmState.resolve();
     } else {
-      confirmStateRef.current.reject();
+      confirmState.reject(new Error('User rejected'));
     }
-  };
-
-  const ConfirmDialog = ({title, content,...props}) => {
-    return (
-      <>
-        <ConfirmationModal
-          title={title}
-          content={content}
-          onConfirm={() => handleConfirm(true)}
-          onReject={() => handleConfirm(false)}
-        >
-        </ConfirmationModal>
-      </>
-    );
   };
 
   return { confirm };

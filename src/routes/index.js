@@ -4,7 +4,7 @@ import PublicRoutes from './PublicRoutes';
 import { FloatingButton } from './FloatingButton';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useThemeStore } from '../stores/useThemeStore';
+import { useThemeStore } from '../stores';
 
 const Routes = () => {
   const {theme} = useThemeStore()

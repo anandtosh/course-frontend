@@ -1,7 +1,7 @@
 import React from 'react'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import MarkdownViewer from '../../../components/common/MarkdownViewer';
-import { useQuizStore } from '../../../stores/useQuizStore';
+import { useQuizStore } from '../../../stores';
 
 const CodeBlock = ({ code }) => {
     return <pre className="whitespace-pre-wrap"><code>{code}</code></pre>;

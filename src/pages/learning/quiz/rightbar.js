@@ -1,17 +1,15 @@
 import clsx from 'clsx'
 import React, { useState } from 'react'
-import { useQuizStore } from '../../../stores/useQuizStore'
+import { useQuizStore } from '../../../stores'
 import { toast } from 'react-toastify'
-import TransitionModal from '../../../components/modals/TransitionModal'
-import { useConfirmationModal } from '../../../hooks/useConfirmationHook'
+import { useConfirmationHook } from '../../../hooks'
+import api from '../../../utility/apis'
 
 const RightBarQuiz = (props) => {
-    const { quiz, cqIndex, setCqIndex, unlocked, addUnlocked,addSelected,isSelected,question } = useQuizStore()
-    const [isSubmitOpen,setIsSubmitOpen] = useState(false)
-    const {confirm} = useConfirmationModal()
+    const { quiz, cqIndex, setCqIndex, unlocked,selected, addUnlocked,addSelected,isSelected,question } = useQuizStore()
+    const {confirm} = useConfirmationHook()
     const handleSaveAndNext = () => {
         // save question and turn to next get value from current question
-        console.log(question.answer)
         if(question?.answer !== null && question?.answer !== undefined){
             addSelected(question.id,question.answer)
             setCqIndex(cqIndex+1)
@@ -23,8 +21,17 @@ const RightBarQuiz = (props) => {
     }
 
     const submitQuiz = async() => {
-        // setIsSubmitOpen(true)
-        let resp = await confirm()
+        try{
+            let resp = await confirm('Please Confirm',`Are you sure you want to submit your answers? You have answered ${selected.length} out ${quiz.questions.length} questions`)
+            let result = await api.post(`/quizzes/${quiz.id}/response`,{
+                responses : selected
+            })
+            console.log(result)
+            toast.success("You answers has been submitted, wait for your result.")
+        }catch(e){
+            toast.error('Submit later')
+            console.log(e)
+        }
     }
 
     return (
@@ -34,7 +41,7 @@ const RightBarQuiz = (props) => {
                     <button
                         key={index}
                         className={clsx(
-                            `w-8 h-8 rounded-sm flex items-center justify-center text-sm font-semibold text-white shadow-sm shadow-gray-500 dark:shadow-stone-900 `,
+                            `w-8 h-8 rounded-sm flex items-center justify-center text-sm font-semibold text-white shadow-sm drop-shadow-md shadow-gray-500 dark:shadow-stone-900 `,
                             {
                                 'bg-blue-700': cqIndex === index,
                                 'bg-green-500': cqIndex !== index && isSelected(_.id),
@@ -70,9 +77,6 @@ const RightBarQuiz = (props) => {
                     </button>
                 </div>
             </div>
-            <TransitionModal isOpen={isSubmitOpen} setIsOpen={setIsSubmitOpen} title={'Submit Your Response'}>
-
-            </TransitionModal>
         </div>
     )
 }

@@ -8,10 +8,10 @@ import FullScreenLoader from '../../../components/helpers/FullScreenLoader'
 import Scrollbar from '../../../components/common/Scrollbar'
 import MultipleOptions from './multiple_options'
 import RightBarQuiz from './rightbar'
-import { useQuizStore } from '../../../stores/useQuizStore'
+import { useQuizStore } from '../../../stores'
 
 const QuizContainer = () => {
-    const { quiz, setQuiz, cqIndex, setCqIndex, question, setQuestion, selected } = useQuizStore()
+    const { quiz, setQuiz, cqIndex, setCqIndex, question, setQuestion, selected,setTimeRemaining } = useQuizStore()
     const [searchParams, seSearchParams] = useSearchParams()
     const [loading, setLoading] = useState(true)
     useEffect(() => {
@@ -21,6 +21,7 @@ const QuizContainer = () => {
             api.get(`/quizzes/${quiz_id}`).then((resp) => {
                 if (resp.status === 200) {
                     setQuiz(resp.data)
+                    setTimeRemaining(15*60)
                 }
             }).finally(() => {
                 setLoading(false)
@@ -44,16 +45,16 @@ const QuizContainer = () => {
     const [currentSelection, setCurrentSelection] = useState(null)
 
     useEffect(() => {
-        if(!currentSelection){
-            if(question){
+        if (!currentSelection) {
+            if (question) {
                 let que = question
                 delete que.answer
-                setQuestion({ ...que})
+                setQuestion({ ...que })
             }
-        }else{
-            question?.question_type == 'MCMA' ? setQuestion({ ...question, answer: currentSelection?.map((el) => {return el.id}) }): setQuestion({ ...question, answer: currentSelection.id })
+        } else {
+            question?.question_type == 'MCMA' ? setQuestion({ ...question, answer: currentSelection?.map((el) => { return el.id }) }) : setQuestion({ ...question, answer: currentSelection.id })
         }
-    },[currentSelection])
+    }, [currentSelection])
 
     useEffect(() => {
         let que = quiz?.questions?.[cqIndex];
@@ -86,31 +87,33 @@ const QuizContainer = () => {
                             <Question />
                             <Timer />
                         </div>
-                        {(() => {
-                            switch (question?.question_type) {
-                                case 'T/F':
-                                    return <Options
-                                        answers={[{ id: 'true', option_text: "True" }, { id: 'false', option_text: "False" }]}
-                                        className={'mx-10'}
-                                    />;
-                                case 'MCQ':
-                                    return <Options
-                                        answers={question?.options}
-                                        className={'mx-10'}
-                                        selected={currentSelection}
-                                        setSelected={(answer) => { setCurrentSelection(answer) }}
-                                    />;
-                                case 'MCMA':
-                                    return <MultipleOptions
-                                        answers={question?.options}
-                                        className={'mx-10'}
-                                        selected={currentSelection ?? []}
-                                        setSelected={(answers) => {setCurrentSelection(answers)}}
-                                    />
-                                default:
-                                    return <p className={'mx-10 px-4'}>This Question is Unsupported, Report Here</p>;
-                            }
-                        })()}
+                        <div className=' w-full'>
+                            {(() => {
+                                switch (question?.question_type) {
+                                    case 'T/F':
+                                        return <Options
+                                            answers={[{ id: 'true', option_text: "True" }, { id: 'false', option_text: "False" }]}
+                                            className={'mx-10'}
+                                        />;
+                                    case 'MCQ':
+                                        return <Options
+                                            answers={question?.options}
+                                            className={'mx-10'}
+                                            selected={currentSelection}
+                                            setSelected={(answer) => { setCurrentSelection(answer) }}
+                                        />;
+                                    case 'MCMA':
+                                        return <MultipleOptions
+                                            answers={question?.options}
+                                            className={'mx-10'}
+                                            selected={currentSelection ?? []}
+                                            setSelected={(answers) => { setCurrentSelection(answers) }}
+                                        />
+                                    default:
+                                        return <p className={'mx-10 px-4'}>This Question is Unsupported, Report Here</p>;
+                                }
+                            })()}
+                        </div>
                     </Scrollbar>
                 </div>
                 <div className='bg-gray-200 dark:bg-slate-700 w-1/4 max-w-[300px] pt-10 px-4'>

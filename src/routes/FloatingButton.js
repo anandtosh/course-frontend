@@ -1,5 +1,5 @@
 import React from 'react';
-import { useThemeStore } from '../stores/useThemeStore';
+import { useThemeStore } from '../stores';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
