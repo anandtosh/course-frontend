@@ -77,7 +77,7 @@ export default function Example() {
                       </div>
                       :
                       <div className='ml-4 flex items-center md:ml-6'>
-                        <Link to={'/register'} className='bg-transparent border border-green-400 text-green-400 hover:border-green-300 hover:text-green-300 w-[120px] text-center py-2 rounded-full mx-4'>
+                        <Link to={'/register'} className='bg-transparent border border-green-400 text-green-400 hover:border-green-300 hover:text-green-300 w-[120px] text-center py-2 rounded-full mx-4 hidden md:block'>
                           Register
                         </Link>
                         <Link to={'/login'} className='bg-transparent border border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 w-[120px] text-center py-2 rounded-full ml-4'>

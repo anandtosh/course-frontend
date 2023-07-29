@@ -6,13 +6,13 @@ const HomePage = () => {
       {/* Hero section */}
       <section className="bg-blue-600 text-white py-24">
         <div className="w-full md:w-3/4 mx-auto px-4">
-          <h1 className="text-5xl font-bold mb-4">
+          <h1 className="text-4xl font-bold mb-4">
             Welcome to AnandBhatnagar.com
           </h1>
-          <p className="text-lg mb-8">
+          <p className="text-lg mb-8 text-justify ">
             Your premier online platform for top-notch courses covering a diverse array of domains! Whether you aspire to become a programming pro, explore the intricacies of AWS and GCP cloud computing, venture into the transformative world of blockchain, understand API descriptions, excel in government exam preparation, or sharpen your skills in mathematics and science, you've come to the right place.
           </p>
-          <p className="text-lg mb-8">
+          <p className="text-lg mb-8 text-justify ">
             At AnandBhatnagar.com, we take pride in offering meticulously crafted courses that cater to learners of all levels – from beginners taking their first steps to seasoned professionals seeking to deepen their expertise.
           </p>
         </div>
@@ -26,14 +26,14 @@ const HomePage = () => {
             {/* Featured widget 1 */}
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h3 className="text-xl font-semibold mb-2">Extensive Course Selection</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify ">
                 Immerse yourself in an extensive library of courses, encompassing everything from programming languages (Python, Java, C++, and more) to AWS and GCP essentials, blockchain applications, API description best practices, government exam preparation for various competitive tests, and in-depth math and science topics.
               </p>
             </div>
             {/* Featured widget 2 */}
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h3 className="text-xl font-semibold mb-2">Engaging Quizzes</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-justify ">
                 Each lesson comes with interactive quizzes to reinforce your understanding and measure your progress as you journey through the course material.
               </p>
             </div>

@@ -36,7 +36,7 @@ const Register = () => {
                 toast.success('Signed up successful, Please check your email for verification.');
             }
         } catch (error) {
-            toast.error('An error occurred while registering. Please try again.');
+            // toast.error('An error occurred while registering. Please try again.');
         }
     };
 

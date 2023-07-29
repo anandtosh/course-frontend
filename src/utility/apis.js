@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 // import axiosAdapter from 'axios/lib/adapters/xhr';
 let token = localStorage.getItem('fols_auth') ? (JSON.parse(localStorage.getItem('fols_auth')))?.token : null
 const api = axios.create({
@@ -30,6 +31,11 @@ api.interceptors.response.use(
     return response;
   },
   error => {
+    if(error?.response?.status?.toString().startsWith("4")){
+      toast.error(error.response.data.error)
+    }else if(error?.response?.status?.toString().startsWith("5")){
+      toast.error(error?.response?.data?.error || 'Something went wrong, Please try again later.')
+    }
     // Handle response errors
     // return Promise.reject(error);
   }

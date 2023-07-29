@@ -37,7 +37,7 @@ const Login = () => {
         toast.success('Login successful.')
       }
     } catch (error) {
-      toast.error('An error occurred while login. Please try again.');
+      // toast.error('An error occurred while login. Please try again.');
     }
   };
 
