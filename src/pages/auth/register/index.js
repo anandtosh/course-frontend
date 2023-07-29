@@ -1,149 +1,108 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
-
-const countryOptions = [
-    { value: 'usa', label: 'USA' },
-    { value: 'canada', label: 'Canada' },
-    { value: 'uk', label: 'UK' },
-    // Add more countries as needed
-];
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import api from '../../../utility/apis';
+import FormField from '../../../components/common/FormField';
+import { EnvelopeIcon, FingerPrintIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { FingerPrintIcon as FingerPrintIconSolid } from '@heroicons/react/20/solid';
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        name: '',
+    const initialValues = {
         email: '',
-        mobile: '',
-        country: null,
+        name: '',
         password: '',
-        confirmPassword: '',
+        confirm_password: '',
+    };
+
+    const validationSchema = Yup.object({
+        name: Yup.string().required('Name is required'),
+        email: Yup.string().email('Invalid email address').required('Email is required'),
+        password: Yup.string().required('Password is required'),
+        confirm_password: Yup.string()
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .required('Confirm Password is required'),
     });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-
-    const handleCountryChange = (selectedOption) => {
-        setFormData({
-            ...formData,
-            country: selectedOption,
-        });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
-        console.log(formData);
+    const onSubmit = async (values) => {
+        try {
+            let resp = await api.post('/auth/signup', {
+                email: values.email,
+                name: values.name,
+                password: values.password,
+            });
+            if (resp.status === 201) {
+                toast.success('Signed up successful, Please check your email for verification.');
+            }
+        } catch (error) {
+            toast.error('An error occurred while registering. Please try again.');
+        }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-md w-full md:w-1/2 grid md:grid-cols-2 gap-4">
-                <h1 className="col-span-2 text-2xl font-bold mb-6">Register</h1>
-                <div className='col-span-1'>
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                            <label htmlFor="name" className="block font-medium mb-2">
-                                Name
-                            </label>
-                            <input
-                                type="text"
-                                id="name"
+        <>
+            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight ">
+                Register with us
+            </h2>
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={onSubmit}
+                >
+                    {({ isSubmitting }) => (
+                        <Form className="space-y-6">
+                            <FormField
+                                label="Name"
                                 name="name"
-                                className="w-full border rounded px-3 py-2 outline-none focus:border-blue-500"
-                                placeholder="Enter your name"
-                                value={formData.name}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="email" className="block font-medium mb-2">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                className="w-full border rounded px-3 py-2 outline-none focus:border-blue-500"
-                                placeholder="Enter your email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="mobile" className="block font-medium mb-2">
-                                Mobile
-                            </label>
-                            <input
                                 type="text"
-                                id="mobile"
-                                name="mobile"
-                                className="w-full border rounded px-3 py-2 outline-none focus:border-blue-500"
-                                placeholder="Enter your mobile number"
-                                value={formData.mobile}
-                                onChange={handleInputChange}
+                                icon={<UserCircleIcon className='w-5 h-5' />}
+                                autoComplete="name"
                             />
-                        </div>
+                            <FormField
+                                label="Email address"
+                                name="email"
+                                type="email"
+                                icon={<EnvelopeIcon className='w-5 h-5' />}
+                                autoComplete="email"
+                            />
+                            <FormField
+                                label="Password"
+                                name="password"
+                                type="password"
+                                icon={<FingerPrintIcon className='w-5 h-5' />}
+                                autoComplete="password"
+                            />
+                            <FormField
+                                label="Confirm Password"
+                                name="confirm_password"
+                                type="password"
+                                icon={<FingerPrintIconSolid className='w-5 h-5' />}
+                                autoComplete="password"
+                            />
 
+                            <div>
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                >
+                                    {isSubmitting ? 'Registering...' : 'Register'}
+                                </button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
 
-                    </form>
-                </div>
-                <div className='col-span-1'>
-                    <div className="mb-4">
-                        <label htmlFor="country" className="block font-medium mb-2">
-                            Country
-                        </label>
-                        <Select
-                            id="country"
-                            name="country"
-                            options={countryOptions}
-                            value={formData.country}
-                            onChange={handleCountryChange}
-                            placeholder="Select your country"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block font-medium mb-2">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            className="w-full border rounded px-3 py-2 outline-none focus:border-blue-500"
-                            placeholder="Enter your password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="confirmPassword" className="block font-medium mb-2">
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            className="w-full border rounded px-3 py-2 outline-none focus:border-blue-500"
-                            placeholder="Confirm your password"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                </div>
-                <div className='col-span-2'>
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white rounded px-4 py-2 font-medium hover:bg-blue-600"
-                    >
-                        Register
-                    </button>
-                </div>
+                <p className="mt-10 text-center text-sm text-gray-500">
+                    Already have an account?{' '}
+                    <Link to={'/login'} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        Login here
+                    </Link>
+                </p>
             </div>
-        </div>
+        </>
     );
 };
 

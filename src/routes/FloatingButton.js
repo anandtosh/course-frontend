@@ -7,7 +7,7 @@ export const FloatingButton = () => {
   const { theme, invertTheme } = useThemeStore();
   document.body.classList.toggle('dark', theme === 'dark');
   return (
-    <div className="fixed bottom-4 right-4">
+    <div className="fixed bottom-4 right-4 z-10">
       <button className="bg-gray-700 hover:bg-gray-900 dark:bg-gray-200 dark:hover:bg-white text-white dark:text-black font-bold w-[50px] h-[50px] rounded-full "
         onClick={invertTheme}
       >

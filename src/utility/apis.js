@@ -1,10 +1,11 @@
 import axios from 'axios';
 // import axiosAdapter from 'axios/lib/adapters/xhr';
-
+let token = localStorage.getItem('fols_auth') ? (JSON.parse(localStorage.getItem('fols_auth')))?.token : null
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL, // Set your API base URL here
   headers: {
     'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
   },
 //   adapter: axiosAdapter
 });
