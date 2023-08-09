@@ -17,4 +17,4 @@ authStore = persist(authStore,{name :"fols_auth"})
 
 const useAuthStore =create(authStore)
 
-export {useAuthStore}
+export {useAuthStore,authStore}

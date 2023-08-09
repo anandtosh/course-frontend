@@ -3,38 +3,31 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import InputFormField from '../../../components/common/forms/InputFormField';
-import { EnvelopeIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-toastify';
 import api from '../../../utility/apis';
-import { useAuthStore } from '../../../stores';
 
-const Login = () => {
+const ForgotPassword = () => {
 
-  const { setToken, setUser } = useAuthStore()
   const navigate = useNavigate()
 
   const initialValues = {
     email: '',
-    password: '',
   };
 
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
-    password: Yup.string().required('Password is required'),
   });
 
   const onSubmit = async (values) => {
     try {
-      let resp = await api.post('/auth/login', {
+      let resp = await api.post('/auth/forgot-password', {
         email: values.email,
-        password: values.password,
       });
       if (resp.status === 200) {
         // save token and redirect to home
-        setToken(resp.data.token)
-        setUser(resp.data.user)
-        navigate('/')
-        toast.success('Login successful.')
+        // navigate('/')
+        toast.success('Password Reset Email Sent Succesfully.')
       }
     } catch (error) {
       // toast.error('An error occurred while login. Please try again.');
@@ -44,7 +37,7 @@ const Login = () => {
   return (
     <>
       <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight ">
-        Sign in to your account
+        Reset Your Password
       </h2>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <Formik
@@ -61,20 +54,6 @@ const Login = () => {
                 type="email"
                 autoComplete="email"
                 icon={<EnvelopeIcon className='w-5 h-5' />}
-              />
-              <InputFormField
-                label="Password"
-                name="password"
-                type="password"
-                labelRightWidet={
-                  <div className="text-sm">
-                    <Link to={'/forgot-password'} className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
-                    </Link>
-                  </div>
-                }
-                autoComplete="current-password"
-                icon={<FingerPrintIcon className='w-5 h-5' />}
               />
 
               <div>
@@ -101,4 +80,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

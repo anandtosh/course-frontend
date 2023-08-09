@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import api from '../../../utility/apis';
-import FormField from '../../../components/common/FormField';
+import InputFormField from '../../../components/common/forms/InputFormField';
 import { EnvelopeIcon, FingerPrintIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { FingerPrintIcon as FingerPrintIconSolid } from '@heroicons/react/20/solid';
 
@@ -53,28 +53,28 @@ const Register = () => {
                 >
                     {({ isSubmitting }) => (
                         <Form className="space-y-6">
-                            <FormField
+                            <InputFormField
                                 label="Name"
                                 name="name"
                                 type="text"
                                 icon={<UserCircleIcon className='w-5 h-5' />}
                                 autoComplete="name"
                             />
-                            <FormField
+                            <InputFormField
                                 label="Email address"
                                 name="email"
                                 type="email"
                                 icon={<EnvelopeIcon className='w-5 h-5' />}
                                 autoComplete="email"
                             />
-                            <FormField
+                            <InputFormField
                                 label="Password"
                                 name="password"
                                 type="password"
                                 icon={<FingerPrintIcon className='w-5 h-5' />}
                                 autoComplete="password"
                             />
-                            <FormField
+                            <InputFormField
                                 label="Confirm Password"
                                 name="confirm_password"
                                 type="password"

@@ -4,8 +4,6 @@ import MainLayout from '../components/layouts/MainLayout';
 import Home from '../pages/home';
 import About from '../pages/about';
 import Learning from '../pages/learning';
-import Editor from '../pages/editor';
-import NotFoundComponent from '../pages/not_found';
 import CoursesView from '../pages/courses';
 import SingleCourseView from '../pages/courses/course_view';
 import FileFolderWriter from '../pages/editor/multi_model';
@@ -15,6 +13,9 @@ import VerificationCompleted from '../pages/auth/verification_completed';
 import VerificationFailed from '../pages/auth/verification_failed';
 import AuthLayout from '../components/layouts/AuthLayout';
 import MyCourses from '../pages/my_courses';
+import ResetPassword from '../pages/auth/reset_password';
+import ForgotPassword from '../pages/auth/forgot_password';
+import NotFoundComponent from '../pages/not_found';
 
 const PublicRoutes = () => {
     return (
@@ -22,10 +23,12 @@ const PublicRoutes = () => {
             <Route element={<AuthLayout />} >
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route path='/reset-password/:token' element={<ResetPassword/>} />
             </Route>
             <Route path='/verification-completed' element={<VerificationCompleted />} />
             <Route path='/verification-failed' element={<VerificationFailed />} />
-            <Route path="/" element={<MainLayout />}>
+            <Route element={<MainLayout />}>
                 <Route index element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/courses" element={<CoursesView />} />
@@ -36,7 +39,7 @@ const PublicRoutes = () => {
                 {/* <Route path="/learning" element={<Learning/>} /> */}
                 <Route path="/editor" element={<FileFolderWriter />} />
             </Route>
-            <Route path="/*" element={<NotFoundComponent />} />
+            <Route path='*' element={<NotFoundComponent/>}/>
         </Routes>
     );
 };

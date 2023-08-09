@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { authStore } from '../stores/useAuthStore';
 // import axiosAdapter from 'axios/lib/adapters/xhr';
-let token = localStorage.getItem('fols_auth') ? (JSON.parse(localStorage.getItem('fols_auth')))?.token : null
+let token = localStorage.getItem('fols_auth') ? (JSON.parse(localStorage.getItem('fols_auth')))?.state?.token : null
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL, // Set your API base URL here
   headers: {

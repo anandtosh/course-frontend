@@ -21,8 +21,8 @@ export default function UserMenu() {
     const navigate = useNavigate()
 
     const userNavigation = [
-        { name: 'My Profile', href: '/profile', icon: <UserCircleIcon className="h-5 w-5" aria-hidden="true" /> },
-        { name: 'Settings', href: '/settings', icon: <Cog6ToothIcon className="h-5 w-5" aria-hidden="true" /> },
+        { name: 'My Profile', href: '/dashboard/profile', icon: <UserCircleIcon className="h-5 w-5" aria-hidden="true" /> },
+        { name: 'Settings', href: '/dashbaord/settings', icon: <Cog6ToothIcon className="h-5 w-5" aria-hidden="true" /> },
         { name: 'Sign out', onClick: async () => { await resetAuth();navigate('/login')}, icon: <PowerIcon className="h-5 w-5" aria-hidden="true" /> },
     ]
 

@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { Suspense } from "react";
+import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import FloatingButton from "./routes/FloatingButton";
+import { useThemeStore } from "./stores";
 function App() {
+  const {theme} = useThemeStore()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Suspense fallback={<>Fallback Component</>} >
+        <Outlet/>
+        <FloatingButton />
+        <ToastContainer
+          position='bottom-right'
+          theme={`${theme === 'dark' ? 'light' : 'dark'}`}
+        />
+      </Suspense>
+    </>
   );
 }
 

@@ -2,15 +2,20 @@ import React from 'react';
 import { Field, ErrorMessage } from 'formik';
 import clsx from 'clsx';
 
-const FormField = ({ label, name, type, icon, ...inputProps }) => {
+const InputFormField = ({ label, name, type, icon, labelRightWidet, ...inputProps }) => {
     return (
         <div className='grid grid-col-1'>
+            <div className='flex flex-row justify-between'>
             {
                 label &&
                 <label htmlFor={name} className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
                     {label}
                 </label>
             }
+            {
+                labelRightWidet
+            }
+            </div>
             <div class="flex">
                 {
                     icon &&
@@ -37,4 +42,4 @@ const FormField = ({ label, name, type, icon, ...inputProps }) => {
 
 };
 
-export default FormField;
+export default InputFormField;

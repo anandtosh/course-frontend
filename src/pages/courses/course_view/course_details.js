@@ -1,7 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useConfirm from '../../../hooks/useConfirmationHook';
+import { toast } from 'react-toastify';
+import api from '../../../utility/apis';
 
 const CourseDetails = ({ course }) => {
+
+  const {confirm} = useConfirm()
+  const enrollUser = async () => {
+    try{
+      await confirm("Enroll to course", `Are you sure you want to enroll to course ${course.course_name}`)
+      let resp = await api.post('/enrollments',{
+        course_id: course.id
+      })
+      if(resp.status === 201){
+        toast.success(`You are successfully enrolled to ${course.course_name}.`)
+      }
+    }catch(e){
+      console.log(e)
+    }
+  }
+
   return (
     <div className="bg-gray-100 p-10 m-5 rounded w-full sm:w-full md:w-2/3 dark:bg-gray-800 shadow-md">
       <div className='text-center'>
@@ -33,9 +52,14 @@ const CourseDetails = ({ course }) => {
         </div>
       ))}
       <div className=' text-center my-[30px]'>
-          <Link to={`/learning/courses/${course.id}`} className='bg-blue-600 p-3 px-5 rounded-[15px] text-white'>
-            Start Learing {course.course_name}
-          </Link>
+          {/* <Link to={`/learning/courses/${course.id}`} className='bg-blue-600 p-3 px-5 rounded-[15px] text-white'>
+            Enroll for {course.course_name}
+          </Link> */}
+          <button className='bg-blue-600 p-3 px-5 rounded-[15px] text-white'
+            onClick={enrollUser}
+          >
+            Enroll for {course.course_name}
+          </button>
       </div>
     </div>
   );

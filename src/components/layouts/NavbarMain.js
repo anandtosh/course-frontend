@@ -1,8 +1,7 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, Cog6ToothIcon, PowerIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Disclosure, Transition } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import UserMenu from './partials/UserMenu'
 import NotificationMenu from './partials/NotificationMenu'
 import { useAuthStore } from '../../stores'
@@ -17,14 +16,14 @@ const navigation = [
 
 export default function Example() {
 
-  const {token} = useAuthStore()
+  const { token } = useAuthStore()
   const { pathname } = useLocation()
 
   return (
     <>
       {/* <div className="min-h-full"> */}
       <Disclosure as="nav" className="bg-gray-800">
-        {({ open }) => (
+        {({ open, close }) => (
           <>
             <div className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
@@ -89,25 +88,35 @@ export default function Example() {
 
               </div>
             </div>
-
-            <Disclosure.Panel className="md:hidden">
-              <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    // as="a"
-                    to={item.to}
-                    className={clsx(
-                      item.to == pathname ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'block rounded-md px-3 py-2 text-base font-medium'
-                    )}
-                    aria-current={item.to == pathname ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </Disclosure.Panel>
+            <Transition
+              className={'absolute left-0 right-0 z-10 bg-gray-800'}
+              enter="transition duration-400 ease-out"
+              enterFrom="transform opacity-0"
+              enterTo="transform opacity-100"
+              leave="transition duration-300 ease-out"
+              leaveFrom="transform opacity-100"
+              leaveTo="transform opacity-0"
+            >
+              <Disclosure.Panel className="md:hidden">
+                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      // as="a"
+                      to={item.to}
+                      className={clsx(
+                        item.to == pathname ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        'block rounded-md px-3 py-2 text-base font-medium'
+                      )}
+                      onClick={close}
+                      aria-current={item.to == pathname ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </Disclosure.Panel>
+            </Transition>
           </>
         )}
       </Disclosure>
