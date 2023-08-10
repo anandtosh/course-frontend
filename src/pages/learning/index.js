@@ -25,8 +25,8 @@ const Learning = () => {
 
   return (
     // <Quiz course={course}/>
-    <QuizContainer course={course} />
-    // <LearningMain course={course}/>
+    // <QuizContainer course={course} />
+    <LearningMain course={course}/>
   );
 };
 

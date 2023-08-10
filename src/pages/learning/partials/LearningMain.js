@@ -1,7 +1,7 @@
 import { faArrowLeft, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import RenderDynamicHTML from '../../../components/common/RenderDynamicHTML';
 import { withLearning } from '../hoc';
 import api from '../../../utility/apis';
@@ -16,6 +16,7 @@ const LearningMain = ({ course, ...props }) => {
     const [lesson, setLesson] = useState(null)
     const [currentTopic, setCurrentTopic] = useState(null)
     const [totalTopics, setTotalTopics] = useState(0)
+    const navigate = useNavigate()
     // const [thisTopic,setThisTopic] = useState(0)
     const topicNumber = searchParams.get('topic')
 
@@ -63,8 +64,26 @@ const LearningMain = ({ course, ...props }) => {
         setSearchParams({ topic: topicNumber - 1 })
     }
 
+    const startCourse = () => {
+        // go to first lesson of this course
+        // console.log(course.chapters[0].lessons[0].id)
+        navigate(`/learning/courses/${course.id}/lessons/${course.chapters[0].lessons[0].id}`)
+    }
+
     if (lesson_id == undefined) {
-        return <></>
+        return (
+            <div className='flex flex-col justify-center items-center h-full'>
+                <button className='bg-green-600 hover:bg-green-500 text-white px-8 py-2 rounded-md'
+                    onClick={startCourse}
+                >
+                    Start Learning
+                </button>
+                <div className='mt-5 text-center'>
+                    <h1 className="text-lg">Introduction</h1>
+                    <p>{course.course_description}</p>
+                </div>
+            </div>
+        )
     }
 
     if (!currentTopic) {
