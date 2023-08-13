@@ -8,10 +8,12 @@ import api from '../../../utility/apis';
 import FullScreenLoader from '../../../components/helpers/FullScreenLoader';
 import RightBarProgress from './RightBarProgress';
 import Scrollbar from '../../../components/common/Scrollbar';
+import { useEnrollmentStore } from '../../../stores';
+import { toast } from 'react-toastify';
 
 const LearningMain = ({ course, ...props }) => {
 
-    const { lesson_id } = useParams()
+    const { lesson_id,enrollment_id } = useParams()
     const [searchParams, setSearchParams] = useSearchParams()
     const [lesson, setLesson] = useState(null)
     const [currentTopic, setCurrentTopic] = useState(null)
@@ -19,9 +21,13 @@ const LearningMain = ({ course, ...props }) => {
     const navigate = useNavigate()
     // const [thisTopic,setThisTopic] = useState(0)
     const topicNumber = searchParams.get('topic')
+    const {enrollment} = useEnrollmentStore()
 
     const getTopicId = (lesson, topic_number) => {
-        return lesson.topics.find((el) => el.topic_order == (topic_number - 1))?.['id']
+        let topic_id = lesson.topics.find((el) => el.topic_order == (topic_number - 1))?.['id']
+        let chapter_id = lesson.ChapterId
+        let lesson_id = lesson.id
+        return {topic_id, chapter_id, lesson_id}
     }
     // console.log(lesson_id)
     useEffect(() => {
@@ -45,11 +51,16 @@ const LearningMain = ({ course, ...props }) => {
     useEffect(() => {
         if (topicNumber && lesson) {
             // let topic = lesson.topics[0]
-            let topicId = getTopicId(lesson, topicNumber)
-            api.get(`/topics/${topicId}`).then((resp) => {
-                setCurrentTopic(resp.data)
+            let {topic_id,chapter_id,lesson_id} = getTopicId(lesson, topicNumber)
+            api.put(`/enrollments/${enrollment.id}/progress`,{
+                topic_id,chapter_id,lesson_id
+            }).then((resp) => {
+                setCurrentTopic(resp.data.topic)
             }).catch((err) => {
                 setCurrentTopic(null)
+                if(err?.message){
+                    toast.error(err.message)
+                }
             })
             setTotalTopics(lesson.topics.length)
             // setThisTopic(lesson.topics.find((el,i) => el.id === topicId)['topic_order'] +1 )
@@ -67,7 +78,7 @@ const LearningMain = ({ course, ...props }) => {
     const startCourse = () => {
         // go to first lesson of this course
         // console.log(course.chapters[0].lessons[0].id)
-        navigate(`/learning/courses/${course.id}/lessons/${course.chapters[0].lessons[0].id}`)
+        navigate(`/app/enrollments/${enrollment_id}/lessons/${course.chapters[0].lessons[0].id}`)
     }
 
     if (lesson_id == undefined) {

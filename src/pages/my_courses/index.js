@@ -10,7 +10,6 @@ const MyCourses = () => {
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         api.get('/enrollments').then((resp) => {
-            console.log(resp)
             if (resp.data && resp.data.length > 0) {
                 setEnrollments(resp.data)
             } else {
@@ -32,12 +31,13 @@ const MyCourses = () => {
     return (
         <Scrollbar>
             <div className='grid sm:grid-cols-1 md:grid-cols-4 justify-center items-center gap-8 p-6'>
-                {enrollments.map(({course}) => (
+                {enrollments.map(({id,course,progress_percent,progress}) => (
                     <>
                         <EnrolledCard
                             title={course.course_name}
                             description={course.course_description}
-                            to={`/learning/courses/${course.id}`}
+                            percent={parseInt(progress_percent)}
+                            to={parseInt(progress_percent)? `/app/enrollments/${id}/lessons/${progress.lesson_id}?topic=${progress.topic_order+1}` :`/app/enrollments/${id}`}
                         />
                     </>
                 ))}

@@ -6,23 +6,25 @@ import UserMenu from './partials/UserMenu'
 import NotificationMenu from './partials/NotificationMenu'
 import { useAuthStore } from '../../stores'
 
-const navigation = [
-  { name: 'Home', to: '/' },
-  { name: 'All Courses', to: '/courses' },
-  { name: 'My Courses', to: '/learning/courses' },
-  { name: 'Quizzes', to: '/learning/quizzes' },
-  { name: 'Exams', to: '/learning/exams' },
-]
 
 export default function Example() {
 
   const { token } = useAuthStore()
   const { pathname } = useLocation()
+  const navigation = [
+    { name: 'Home', to: '/' },
+    { name: 'All Courses', to: '/courses' },
+    ...(token ? [
+      { name: 'My Courses', to: '/app/enrollments' },
+      { name: 'Quizzes', to: '/learning/quizzes' },
+      { name: 'Exams', to: '/learning/exams' },
+    ] : [])
+  ]
 
   return (
     <>
       {/* <div className="min-h-full"> */}
-      <Disclosure as="nav" className="bg-gray-800">
+      <Disclosure as="nav" className="bg-gray-800 flex-none">
         {({ open, close }) => (
           <>
             <div className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">

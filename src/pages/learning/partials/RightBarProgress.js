@@ -1,8 +1,11 @@
 import clsx from 'clsx'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 const RightBarProgress = ({ course, lesson, currentTopic, ...props }) => {
+
+    const {enrollment_id} = useParams()
+
     const lessons = course.chapters.reduce((lessons, chapter) => (
         lessons = lessons.concat(chapter.lessons)
     ), [])
@@ -28,10 +31,10 @@ const RightBarProgress = ({ course, lesson, currentTopic, ...props }) => {
     return (
         <div className='p-3'>
             <div className='mb-10 flex flex-col gap-3 text-center'>
-                {getPreviousLessonId() && <Link to={`/learning/courses/${course.id}/lessons/${getPreviousLessonId()}`} className='border border-red-600 rounded-md p-2 text-red-600 '>
+                {getPreviousLessonId() && <Link to={`/app/enrollments/${enrollment_id}/lessons/${getPreviousLessonId()}`} className='border border-red-600 rounded-md p-2 text-red-600 '>
                     Previous Lesson
                 </Link>}
-                {getNextLessonId() && <Link to={`/learning/courses/${course.id}/lessons/${getNextLessonId()}`} className='border border-green-600 rounded-md p-2 text-green-600 '>
+                {getNextLessonId() && <Link to={`/app/enrollments/${enrollment_id}/lessons/${getNextLessonId()}`} className='border border-green-600 rounded-md p-2 text-green-600 '>
                     Next Lesson
                 </Link>}
             </div>

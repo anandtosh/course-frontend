@@ -2,12 +2,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { authStore } from '../stores/useAuthStore';
 // import axiosAdapter from 'axios/lib/adapters/xhr';
-let token = localStorage.getItem('fols_auth') ? (JSON.parse(localStorage.getItem('fols_auth')))?.state?.token : null
+// let token = localStorage.getItem('fols_auth') ? (JSON.parse(localStorage.getItem('fols_auth')))?.state?.token : null
 const api = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL, // Set your API base URL here
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
+    // 'Authorization': `Bearer ${token}`
   },
 //   adapter: axiosAdapter
 });
@@ -15,8 +15,10 @@ const api = axios.create({
 // Add request interceptor
 api.interceptors.request.use(
   config => {
-    // You can modify the request config here, such as adding headers or authentication tokens
-    // config.headers['Authorization'] = 'Bearer ' + token;
+    const token = localStorage.getItem('fols_auth') ? JSON.parse(localStorage.getItem('fols_auth'))?.state?.token : null;
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
     return config;
   },
   error => {
@@ -33,10 +35,13 @@ api.interceptors.response.use(
   },
   error => {
     if(error?.response?.status?.toString().startsWith("4")){
-      toast.error(error.response.data.error)
+      if(error?.response?.data?.message){
+        toast.error(error?.response?.data?.message)
+      }
     }else if(error?.response?.status?.toString().startsWith("5")){
       toast.error(error?.response?.data?.error || 'Something went wrong, Please try again later.')
     }
+    throw error;
     // Handle response errors
     // return Promise.reject(error);
   }

@@ -15,7 +15,7 @@ const Routes = () => {
     <Router>
       <AllRoutes>
         <Route element={<App />}>
-          <Route path="dashboard/*" element={<PrivateRoutes />} />
+          <Route path="app/*" element={<PrivateRoutes />} />
           <Route path='/*' element={<PublicRoutes />} />
           {/* <Route path="*" element={<NotFoundComponent />} /> */}
         </Route>

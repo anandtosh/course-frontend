@@ -5,20 +5,24 @@ import FullScreenLoader from '../../components/helpers/FullScreenLoader';
 import api from '../../utility/apis';
 import Quiz from './partials/Quiz'
 import QuizContainer from './quiz';
+import { useEnrollmentStore } from '../../stores';
 
 const Learning = () => {
-  const {id} = useParams()
+  const {enrollment_id} = useParams()
   const [course, setCourse] = useState(null)
+  const {setEnrollment} = useEnrollmentStore()
 
   useEffect(() => {
-    if(id){
-      api.get(`/courses/${id}`).then((resp) => {
+    if(enrollment_id){
+      api.get(`/enrollments/${enrollment_id}`).then((resp) => {
         if(resp.status == '200'){
-          setCourse(resp.data)
+          setCourse(resp.data.course)
+          setEnrollment(resp.data)
         }
       })
     }
-  },[id])
+  },[enrollment_id])
+  
   if(!course){
     return <FullScreenLoader/>
   }

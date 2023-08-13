@@ -2,19 +2,19 @@ import React from 'react';
 import { Field, ErrorMessage } from 'formik';
 import clsx from 'clsx';
 
-const InputFormField = ({ label, name, type, icon, labelRightWidet, ...inputProps }) => {
+const InputFormField = ({ label, name, type, icon, labelRightWidet, className, ...inputProps }) => {
     return (
         <div className='grid grid-col-1'>
             <div className='flex flex-row justify-between'>
-            {
-                label &&
-                <label htmlFor={name} className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    {label}
-                </label>
-            }
-            {
-                labelRightWidet
-            }
+                {
+                    label &&
+                    <label htmlFor={name} className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                        {label}
+                    </label>
+                }
+                {
+                    labelRightWidet
+                }
             </div>
             <div class="flex">
                 {
@@ -31,7 +31,8 @@ const InputFormField = ({ label, name, type, icon, labelRightWidet, ...inputProp
                         icon ?
                             "rounded-none rounded-r-lg bg-gray-50 border outline-none text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             :
-                            "bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            "bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+                        className
                     )}
                     {...inputProps}
                 />

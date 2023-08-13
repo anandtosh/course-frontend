@@ -2,17 +2,18 @@ import React from 'react';
 import AccordionMenu from '../../components/common/AccordionMenu';
 import Scrollbar from '../../components/common/Scrollbar';
 import { faBookBookmark } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from 'react-router-dom';
 
 export const withLearning = (Component) => {
   return function LearningWithMain({course,...props}) {
-
+    const {enrollment_id} = useParams()
     let menu = course.chapters.map((el) => {
       return {
         title: el.chapter_name,
         submenu: el.lessons.map((lesson) => {
           return {
             icon:faBookBookmark,
-            to: `/learning/courses/${course.id}/lessons/${lesson.id}`,
+            to: `/app/enrollments/${enrollment_id}/lessons/${lesson.id}`,
             title:lesson.lesson_name,
             subtitle:lesson.lesson_description
           }
