@@ -9,7 +9,7 @@ function App() {
     <>
       <Suspense fallback={<>Fallback Component</>} >
         <Outlet/>
-        <FloatingButton />
+        {/* <FloatingButton /> */}
         <ToastContainer
           position='bottom-right'
           theme={`${theme === 'dark' ? 'light' : 'dark'}`}

@@ -10,8 +10,9 @@ import RightBarProgress from './RightBarProgress';
 import Scrollbar from '../../../components/common/Scrollbar';
 import { useEnrollmentStore } from '../../../stores';
 import { toast } from 'react-toastify';
+import clsx from 'clsx';
 
-const LearningMain = ({ course, ...props }) => {
+const LearningMain = ({ course, visiblePortion,isSmall = false , ...props }) => {
 
     const { lesson_id,enrollment_id } = useParams()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -103,7 +104,7 @@ const LearningMain = ({ course, ...props }) => {
     // console.log(currentTopic)
     return (
         <div className='py-[30px] flex flex-row h-full'>
-            <div className='flex-grow pr-[30px] overflow-auto'>
+            <div className={clsx( isSmall ? (visiblePortion == 1 ? 'w-full p-3' : 'hidden') : 'flex-grow pr-[30px] overflow-auto')}>
                 <Scrollbar>
                     <div className="flex justify-between ">
                         <button className="text-lg"
@@ -129,7 +130,7 @@ const LearningMain = ({ course, ...props }) => {
                     </div>
                 </Scrollbar>
             </div>
-            <div className='min-w-[250px]'>
+            <div className={clsx( isSmall ? (visiblePortion == 2 ? 'w-full' : 'hidden') : 'min-w-[250px]')}>
                 <Scrollbar>
                     <RightBarProgress course={course} lesson={lesson} currentTopic={currentTopic} />
                 </Scrollbar>

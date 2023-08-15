@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AccordionMenu from '../../components/common/AccordionMenu';
 import Scrollbar from '../../components/common/Scrollbar';
-import { faBookBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookBookmark, faIdCard, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMediaQuery } from 'react-responsive';
+import clsx from 'clsx';
 
 export const withLearning = (Component) => {
   return function LearningWithMain({course,...props}) {
     const {enrollment_id} = useParams()
+
+    const [visiblePortion, setVisiblePortion] = useState(1)
+    const isSmall = useMediaQuery({maxWidth: 640})
+
     let menu = course.chapters.map((el) => {
       return {
         title: el.chapter_name,
@@ -26,7 +33,7 @@ export const withLearning = (Component) => {
           helo
         </div> */}
         <div className="flex flex-grow">
-          <div className="w-1/4 min-w-[300px] m-[30px]">
+          <div className={clsx(isSmall ? ( visiblePortion === 0 ? "w-full mx-3" : "hidden") : "w-1/4 min-w-[300px] m-[30px]")}>
             <Scrollbar>
               {
                 menu.map((el) => (
@@ -41,9 +48,32 @@ export const withLearning = (Component) => {
           </div>
           <div className="flex-grow">
             <Scrollbar>
-              <Component course={course} {...props} />
+              <Component visiblePortion={visiblePortion} isSmall={isSmall} course={course} {...props} />
             </Scrollbar>
           </div>
+        </div>
+        <div className='h-[70px] bg-gray-200 flex sm:hidden shadow-sm flex-row items-center justify-between px-4'>
+              <button
+                className={clsx(' flex flex-col items-center w-[200px]',visiblePortion == 0 ? 'text-blue-700': 'text-blue-500')}
+                onClick={(e) => setVisiblePortion(0)}
+              >
+                <FontAwesomeIcon icon={faBookBookmark} size={'lg'}/>
+                Chapters
+              </button>
+              <button
+                className={clsx(' flex flex-col items-center w-[200px]',visiblePortion == 1 ? 'text-blue-700': 'text-blue-500')}
+                onClick={(e) => setVisiblePortion(1)}
+              >
+                <FontAwesomeIcon icon={faIdCard} size={'lg'}/>
+                Learning
+              </button>
+              <button
+                className={clsx(' flex flex-col items-center w-[200px]',visiblePortion == 2 ? 'text-blue-700': 'text-blue-500')}
+                onClick={(e) => setVisiblePortion(2)}
+              >
+                <FontAwesomeIcon icon={faTableList} size={'lg'}/>
+                Stats
+              </button>
         </div>
       </div>
     );
