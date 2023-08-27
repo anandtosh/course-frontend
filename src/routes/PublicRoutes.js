@@ -16,6 +16,7 @@ import AuthLayout from '../components/layouts/AuthLayout';
 import ResetPassword from '../pages/auth/reset_password';
 import ForgotPassword from '../pages/auth/forgot_password';
 import NotFoundComponent from '../pages/not_found';
+import CourseCreation from '../pages/admin/course_creation';
 
 const PublicRoutes = () => {
     return (
@@ -36,6 +37,7 @@ const PublicRoutes = () => {
                 
                 {/* <Route path="/learning" element={<Learning/>} /> */}
                 <Route path="/editor" element={<FileFolderWriter />} />
+                <Route path="/admin/create-course" element={<CourseCreation />} />
             </Route>
             <Route path='*' element={<NotFoundComponent/>}/>
         </Routes>

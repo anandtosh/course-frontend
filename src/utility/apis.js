@@ -16,8 +16,13 @@ const api = axios.create({
 api.interceptors.request.use(
   config => {
     const token = localStorage.getItem('fols_auth') ? JSON.parse(localStorage.getItem('fols_auth'))?.state?.token : null;
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    const tokenAdmin = localStorage.getItem('fols_auth_admin') ? JSON.parse(localStorage.getItem('fols_auth_admin'))?.state?.token : null;
+    if(tokenAdmin){
+      config.headers['x-admin-secret'] = `${tokenAdmin}`;
+    }else{
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     }
     return config;
   },
